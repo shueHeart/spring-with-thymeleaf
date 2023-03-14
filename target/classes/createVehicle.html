@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+    <h1>Create vehicle</h1>
+    	
+   	<form th:action="@{/vehicle}" method="post">
+        <div>
+            <label>Production year:</label>
+            <input type="text" th:name="productionYear"/>
+        </div>
+        <div>
+            <label>Body color:</label>
+            <input type="text" th:name="bodyColor"/>
+        </div>
+        <div>
+            <label>Mileage:</label>
+            <input type="text" th:name="mileage"/>
+        </div>
+        <div>
+            <label>Number of owners:</label>
+            <input type="text" th:name="numberOfOwners"/>
+        </div>
+        <div>
+            <label>Price:</label>
+            <input type="text" th:name="price"/>
+        </div>
+      
+       <div>
+            <label>Марка:</label>
+            <div th:each="brand : ${brandList}">
+            
+            	<input type="radio" th:value="${brand.getUuid()}" th:name="brand"/> [[${brand.getName()}]]
+            
+            </div>
+            
+        </div>
+        
+        <div>
+            <button type="submit">Save</button>
+        </div>
+    </form>
+    
+</body>
+</html>

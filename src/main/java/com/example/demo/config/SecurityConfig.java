@@ -26,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
             .formLogin()
-            	.defaultSuccessUrl("/greeting?name=dimon")
+            	.defaultSuccessUrl("/vehicles")
             ;
         
        
@@ -36,6 +36,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
             .inMemoryAuthentication()
-                .withUser("user").password("{noop}password").roles("USER");
+                .withUser("user").password("{noop}1").roles("USER");
     }
 }

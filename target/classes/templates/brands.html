@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+    <h1 align="center">Марки транспортных средств</h1>
+    
+    <table border="2" align="center">
+    	
+    	<thead>
+    		<th> Наименование </th>
+    		<th> Тип </th>
+    		<th> Объем двигателя </th>
+    		<th> Кол-во лошадиных сил </th>
+    		<th> Крутящий момент </th>
+    		<th> Размер дисков </th>
+    		<th> Действия </th>
+    	</thead>
+    	
+    	<tbody th:each="brand : ${brandList}" border="1px">
+    		<th>[[${brand.getName()}]]</th>
+    		<th>[[${brand.getType().getTitle()}]]</th>
+    		<th>[[${brand.getEngineVolume()}]]</th>
+    		<th>[[${brand.getHorsePowers()}]]</th>
+    		<th>[[${brand.getTorque()}]]</th>
+    		<th>[[${brand.getDiskSize()}]]</th>
+    		<th>
+    			<form method="delete">
+    				<button type="submit" >Обновить</button>
+    			</form>
+    			<form th:action="@{/brand/} + ${brand.getUuid()}" method="delete">
+    				<button type="submit" >Удалить</button>
+    			</form>
+    		</th>
+    	</tbody>
+    
+    </table>
+
+	<form th:action="@{/brand/create}" method="get">
+		<div>
+			<input type="submit" value="Создать новую марку"></input>
+		</div>
+	</form>
+	
+	<form th:action="@{/vehicles}" method="get">
+		<div >
+			<input type="submit" value="Перейти к транспортным средствам"></input>
+		</div>
+	</form>
+    
+</body>
+</html>
