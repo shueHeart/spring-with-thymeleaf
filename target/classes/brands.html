@@ -27,7 +27,7 @@
     		<th>[[${brand.getTorque()}]]</th>
     		<th>[[${brand.getDiskSize()}]]</th>
     		<th>
-    			<form method="delete">
+    			<form th:action="@{/update/} + ${brand.getUuid()} + '/brand'" method="get">
     				<button type="submit" >Обновить</button>
     			</form>
     			<form th:action="@{/brand/} + ${brand.getUuid()}" method="delete">

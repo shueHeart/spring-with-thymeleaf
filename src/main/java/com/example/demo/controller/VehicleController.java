@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.vehicle.model.Brand;
 import com.example.demo.vehicle.model.Vehicle;
+import com.example.demo.vehicle.model.VehicleDTO;
 import com.example.demo.vehicle.service.VehicleService;
 
 @RestController(value="")
@@ -25,14 +27,12 @@ public class VehicleController {
 	
 	@GetMapping("/vehicles")
 	public ModelAndView getAllVehicles() {
-				
-		ModelAndView vehicles = new ModelAndView("vehicles");
-	    
-		List<Vehicle> vehicleList = vehicleService.findAll();
-		
-		vehicles.addObject("vehicleList", vehicleList);
-		
-		return vehicles;
+		return vehicleService.getAllVehicles();
+	}
+	
+	@GetMapping("/json/vehicles") 
+	public List<VehicleDTO> getAllJsonVehicles() {
+		return vehicleService.findAll();
 	}
 	
 	@GetMapping("/vehicle/create")
@@ -47,6 +47,11 @@ public class VehicleController {
 		
 		return vehicleService.saveVehicle(vehicle);
 		
+	}
+	
+	@GetMapping("/update/{vehicleUuid}/vehicle")
+	public ModelAndView updateVehicle(@PathVariable("vehicleUuid") UUID vehicleUuid) {
+		return vehicleService.updateVehicle(vehicleUuid);
 	}
 	
 	@GetMapping("/vehicle/{vehicleUuid}")
@@ -67,6 +72,11 @@ public class VehicleController {
 		
 		return vehicleService.saveBrandForm();
 		
+	}
+	
+	@GetMapping("/update/{brandUuid}/brand")
+	public ModelAndView updateBrand(@PathVariable("brandUuid") UUID brandUuid) {
+		return vehicleService.updateBrand(brandUuid);
 	}
 	
 	@PostMapping("/brand")

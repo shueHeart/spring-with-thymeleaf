@@ -27,7 +27,7 @@
     		<th>[[${vehicle.getBrand().getName()}]]</th>
     		<th>[[${vehicle.getPrice()}]]</th>
     		<th>
-    			<form method="delete">
+    			<form th:action="@{/update/} + ${vehicle.getUuid()} + '/vehicle'" method="get">
     				<button type="submit" >Обновить</button>
     			</form>
     			<form th:action="@{/vehicle/} + ${vehicle.getUuid()}" method="delete">

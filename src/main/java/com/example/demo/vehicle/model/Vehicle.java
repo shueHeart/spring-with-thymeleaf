@@ -1,5 +1,6 @@
 package com.example.demo.vehicle.model;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.Entity;
@@ -7,7 +8,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.example.demo.driver.model.Driver;
+import com.example.demo.enterprise.model.Enterprise;
 
 @Entity
 @Table(name = "vehicle")
@@ -30,6 +35,13 @@ public class Vehicle {
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
+    
+    @ManyToOne
+    @JoinColumn(name = "enterpise_id")
+	private Enterprise enterprise;
+    
+    @OneToMany(mappedBy="vehicle")
+    private List<Driver> drivers;
 	
 	public int getProductionYear() {
 		return productionYear;
@@ -86,6 +98,23 @@ public class Vehicle {
 	public void setBrand(Brand brand) {
 		this.brand = brand;
 	}
+
+	public Enterprise getEnterprise() {
+		return enterprise;
+	}
+
+	public void setEnterprise(Enterprise enterprise) {
+		this.enterprise = enterprise;
+	}
+
+	public List<Driver> getDrivers() {
+		return drivers;
+	}
+
+	public void setDrivers(List<Driver> drivers) {
+		this.drivers = drivers;
+	}
+	
 	
 	
 }

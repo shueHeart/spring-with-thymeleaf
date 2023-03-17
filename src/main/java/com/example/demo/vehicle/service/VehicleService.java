@@ -2,6 +2,7 @@ package com.example.demo.vehicle.service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.vehicle.model.Brand;
 import com.example.demo.vehicle.model.Vehicle;
+import com.example.demo.vehicle.model.VehicleDTO;
 import com.example.demo.vehicle.model.VehicleType;
 import com.example.demo.vehicle.repository.BrandRepository;
 import com.example.demo.vehicle.repository.VehicleRepository;
@@ -22,8 +24,25 @@ public class VehicleService {
 	@Autowired
 	private BrandRepository brandRepository;
 	
-	public List<Vehicle> findAll() {
-		return vehicleRepository.findAll();
+	
+	public ModelAndView getAllVehicles() {
+		
+		ModelAndView vehicles = new ModelAndView("vehicles");
+	    
+		List<Vehicle> vehicleList = vehicleRepository.findAll();
+		
+		vehicles.addObject("vehicleList", vehicleList);
+		
+		return vehicles;
+		
+	}
+	
+	public List<VehicleDTO> findAll() {
+		
+		List<Vehicle> vehicles = vehicleRepository.findAll(); 
+		
+		return vehicles.stream().map(vehicle -> VehicleDTO.fromVehicle(vehicle)).collect(Collectors.toList());
+				
 	}
 	
 	public ModelAndView saveVehicle(Vehicle vehicle) {
@@ -35,6 +54,21 @@ public class VehicleService {
 		vehicles.addObject("vehicleList", vehicleRepository.findAll());
 		
 		return vehicles; 
+	}
+	
+	public ModelAndView updateVehicle(UUID vehicleUuid) {
+		
+		ModelAndView updateVehicle = new ModelAndView("updateVehicle");
+		
+		Vehicle vehicle = vehicleRepository.findById(vehicleUuid)
+				.orElseThrow(() -> new RuntimeException("Транспортное средство не найдено."));
+		
+		List<Brand> brandList = brandRepository.findAll();
+		
+		updateVehicle.addObject("vehicle", vehicle);
+		updateVehicle.addObject("brandList", brandList);
+		
+		return updateVehicle;
 	}
 	
 	public ModelAndView saveVehicleForm () {
@@ -76,6 +110,9 @@ public class VehicleService {
 	
 	public ModelAndView saveBrand(Brand brand) {
 		
+		List<Vehicle> vehicles = vehicleRepository.findAllByBrand(brand);
+		brand.setVehicles(vehicles);
+		
 		brandRepository.save(brand);
 		
 		ModelAndView brands = new ModelAndView("brands");
@@ -83,6 +120,19 @@ public class VehicleService {
 		brands.addObject("brandList", brandRepository.findAll());
 		
 		return brands; 
+	}
+	
+	public ModelAndView updateBrand(UUID brandUuid) {
+		
+		ModelAndView updateBrand = new ModelAndView("updateBrand");
+		
+		Brand brand = brandRepository.findById(brandUuid)
+				.orElseThrow(() -> new RuntimeException("Транспортное средство не найдено."));
+				
+		updateBrand.addObject("brand", brand);
+		updateBrand.addObject("typeList", VehicleType.values());
+		
+		return updateBrand;
 	}
 	
 	public ModelAndView saveBrandForm() {

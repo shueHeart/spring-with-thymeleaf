@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <meta charset="UTF-8">
+	    <title>Login</title>
+	</head>
+	<body>
+	    <h1>Изменить транспортное средство</h1>
+	    	
+	   	<form th:action="@{/vehicle}" method="post">
+	   		
+	        <input type="hidden" th:name="uuid" th:value="${vehicle.getUuid()}"/>
+	        <div>
+	            <label>Production year:</label>
+	            <input type="text" th:name="productionYear" th:value="${vehicle.getProductionYear()}"/>
+	        </div>
+	        <div>
+	            <label>Body color:</label>
+	            <input type="text" th:name="bodyColor" th:value="${vehicle.getBodyColor()}"/>
+	        </div>
+	        <div>
+	            <label>Mileage:</label>
+	            <input type="text" th:name="mileage" th:value="${vehicle.getMileage()}"/>
+	        </div>
+	        <div>
+	            <label>Number of owners:</label>
+	            <input type="text" th:name="numberOfOwners" th:value="${vehicle.getNumberOfOwners()}"/>
+	        </div>
+	        <div>
+	            <label>Price:</label>
+	            <input type="text" th:name="price" th:value="${vehicle.getPrice()}"/>
+	        </div>
+	      
+	       <div>
+	            <label>Марка:</label>
+				<select name="brand">
+					<option th:each="brand : ${brandList}" th:value="${brand.getUuid()}" th:text="${brand.getName()}" th:selected="${brand.getUuid().equals(vehicle.getBrand().getUuid())}"></option>
+				</select>
+	        </div>
+	        
+	        <div>
+	            <button type="submit">Save</button>
+	        </div>
+	    </form>
+	    
+	</body>
+</html>

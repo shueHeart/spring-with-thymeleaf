@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <meta charset="UTF-8">
+	    <title>Создать марку</title>
+	</head>
+	<body>
+	    <h1>Изменить марку</h1>
+	    	
+	   	<form th:action="@{/brand}" method="post">
+	   	
+	   		<input type="hidden" th:name="uuid" th:value="${brand.getUuid()}"/>
+	        <div>
+	            <label>Наименование:</label>
+	            <input type="text" th:name="name" th:value="${brand.getName()}"/>
+	        </div>
+	        <div>
+	            <label>Тип:</label>
+	            <div th:each="type : ${typeList}">
+	            	<div th:if="${type.equals(brand.getType())}">
+	            		<input checked type="radio" th:value="${type}" th:name="type"/> [[${type.getTitle()}]]
+	            	</div>
+	            	
+	            	<div th:if="${!type.equals(brand.getType())}">
+	            		<input type="radio" th:value="${type}" th:name="type"/> [[${type.getTitle()}]]
+	            	</div>
+	            	
+	            
+	            </div>
+	            
+	        </div>
+	        <div>
+	            <label>Объем двигателя:</label>
+	            <input type="text" th:name="engineVolume" th:value="${brand.getEngineVolume()}"/>
+	        </div>
+	        <div>
+	            <label>Кол-во лошадиных сил:</label>
+	            <input type="text" th:name="horsePowers" th:value="${brand.getHorsePowers()}"/>
+	        </div>
+	        <div>
+	            <label>Крутящий момент:</label>
+	            <input type="text" th:name="torque" th:value="${brand.getTorque()}"/>
+	        </div>
+	        <div>
+	            <label>Размер дисков:</label>
+	            <input type="text" th:name="diskSize" th:value="${brand.getDiskSize()}"/>
+	        </div>
+	      
+	        
+	        
+	        <div>
+	            <button type="submit">Save</button>
+	        </div>
+	    </form>
+	    
+	</body>
+</html>
