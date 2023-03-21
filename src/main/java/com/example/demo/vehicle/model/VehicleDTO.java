@@ -17,6 +17,9 @@ public class VehicleDTO {
 	private int numberOfOwners;
 
     private UUID brandUuid;
+    
+	private UUID currentDriverUuid;
+	
 	
     private VehicleDTO(Vehicle vehicle) {
     	
@@ -26,6 +29,7 @@ public class VehicleDTO {
     	this.mileage = vehicle.getMileage();
     	this.price = vehicle.getPrice();
     	this.numberOfOwners = vehicle.getNumberOfOwners();
+    	this.currentDriverUuid = vehicle.getCurrentDriverUuid();
     	
     	if (vehicle.getBrand() != null) {
     		this.brandUuid = vehicle.getBrand().getUuid();
@@ -91,6 +95,14 @@ public class VehicleDTO {
 
 	public void setBrandUuid(UUID brandUuid) {
 		this.brandUuid = brandUuid;
+	}
+
+	public UUID getCurrentDriverUuid() {
+		return currentDriverUuid;
+	}
+
+	public void setCurrentDriverUuid(UUID currentDriverUuid) {
+		this.currentDriverUuid = currentDriverUuid;
 	}
 	
 	

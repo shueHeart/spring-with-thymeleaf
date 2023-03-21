@@ -1,5 +1,6 @@
 package com.example.demo.enterprise.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -7,10 +8,13 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import com.example.demo.driver.model.Driver;
+import com.example.demo.manager.model.Manager;
 import com.example.demo.vehicle.model.Vehicle;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Enterprise {
@@ -27,11 +31,16 @@ public class Enterprise {
 	
 	private OrganizationalForm organizationalForm;
 	
-	@OneToMany(mappedBy = "enterprise", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Vehicle> vehicles;
+	@ManyToMany
+	private List<Manager> managers = new ArrayList<Manager>();
 	
+//	@JsonIgnore
 	@OneToMany(mappedBy = "enterprise", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Driver> drivers;
+	private List<Vehicle> vehicles = new ArrayList<Vehicle>();
+	
+//	@JsonIgnore
+	@OneToMany(mappedBy = "enterprise", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Driver> drivers = new ArrayList<Driver>();
 
 	public UUID getUuid() {
 		return uuid;

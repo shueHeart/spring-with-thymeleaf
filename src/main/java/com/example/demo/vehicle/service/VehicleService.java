@@ -25,6 +25,7 @@ public class VehicleService {
 	private BrandRepository brandRepository;
 	
 	
+	
 	public ModelAndView getAllVehicles() {
 		
 		ModelAndView vehicles = new ModelAndView("vehicles");
@@ -54,6 +55,10 @@ public class VehicleService {
 		vehicles.addObject("vehicleList", vehicleRepository.findAll());
 		
 		return vehicles; 
+	}
+	
+	public Vehicle saveJsonVehicle(Vehicle vehicle) {
+		return vehicleRepository.save(vehicle);
 	}
 	
 	public ModelAndView updateVehicle(UUID vehicleUuid) {

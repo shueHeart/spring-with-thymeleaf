@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.demo.enterprise.model.Enterprise;
+import com.example.demo.enterprise.service.EnterpriseService;
 import com.example.demo.vehicle.model.Brand;
 import com.example.demo.vehicle.model.Vehicle;
 import com.example.demo.vehicle.model.VehicleDTO;
@@ -24,6 +27,9 @@ public class VehicleController {
 
 	@Autowired
 	private VehicleService vehicleService;
+	
+	@Autowired
+	private EnterpriseService enterpriseService;
 	
 	@GetMapping("/vehicles")
 	public ModelAndView getAllVehicles() {
@@ -39,6 +45,14 @@ public class VehicleController {
 	public ModelAndView saveVehicleForm() {
 		
 		return vehicleService.saveVehicleForm();
+		
+	}
+	
+
+	@PostMapping("/json/vehicle")
+	public Vehicle saveJsonVehicle(@RequestBody Vehicle vehicle) {
+		
+		return vehicleService.saveJsonVehicle(vehicle);
 		
 	}
 	
@@ -67,6 +81,11 @@ public class VehicleController {
 		return vehicleService.getAllBrands();
 	}
 	
+	@GetMapping("/json/brands")
+	public List<Brand> getAllJsonBrands() {		
+		return vehicleService.findAllBrands();
+	}
+	
 	@GetMapping("/brand/create")
 	public ModelAndView saveBrandForm() {
 		
@@ -90,6 +109,19 @@ public class VehicleController {
 	public ModelAndView deleteBrand(@PathVariable("brandUuid") UUID brandUuid) {
 		
 		return vehicleService.deleteBrand(brandUuid);
+		
+	}
+	
+	@GetMapping("/manager/{mangerId}/vehicles")
+	public List<Vehicle> findAllVehiclesForManager(@PathVariable("mangerId") UUID mangerId) {
+		
+		List<Enterprise> enterprises = enterpriseService.findAllEnterprisesByManagerId(mangerId);
+		
+		List<Vehicle> vehicles = new ArrayList<Vehicle>();
+		
+		enterprises.forEach(enterprise -> vehicles.addAll(enterprise.getVehicles()));
+		
+		return vehicles;
 		
 	}
 	

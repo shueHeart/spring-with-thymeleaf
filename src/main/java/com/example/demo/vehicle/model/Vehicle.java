@@ -32,12 +32,14 @@ public class Vehicle {
 
 	private int numberOfOwners;
 	
+	private UUID currentDriverUuid;
+	
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
     
     @ManyToOne
-    @JoinColumn(name = "enterpise_id")
+    @JoinColumn(name = "enterprise_id")
 	private Enterprise enterprise;
     
     @OneToMany(mappedBy="vehicle")
@@ -113,6 +115,14 @@ public class Vehicle {
 
 	public void setDrivers(List<Driver> drivers) {
 		this.drivers = drivers;
+	}
+
+	public UUID getCurrentDriverUuid() {
+		return currentDriverUuid;
+	}
+
+	public void setCurrentDriverUuid(UUID currentDriverUuid) {
+		this.currentDriverUuid = currentDriverUuid;
 	}
 	
 	

@@ -28,7 +28,7 @@ public class Driver {
 	private int age;
 	
 	@ManyToOne
-    @JoinColumn(name = "brand_id")
+    @JoinColumn(name = "enterprise_id")
 	private Enterprise enterprise;
 	
 	@ManyToOne
