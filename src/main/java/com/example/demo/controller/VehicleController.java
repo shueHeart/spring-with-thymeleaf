@@ -3,8 +3,12 @@ package com.example.demo.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,9 +26,15 @@ import com.example.demo.vehicle.model.Vehicle;
 import com.example.demo.vehicle.model.VehicleDTO;
 import com.example.demo.vehicle.service.VehicleService;
 
-@RestController(value="")
-public class VehicleController {
+import lombok.extern.slf4j.Slf4j;
 
+@RestController()
+@Slf4j
+public class VehicleController extends BaseController{
+
+    private static final Logger log = LoggerFactory.getLogger(LoginController.class);
+
+	
 	@Autowired
 	private VehicleService vehicleService;
 	
@@ -48,15 +58,7 @@ public class VehicleController {
 		
 	}
 	
-
-	@PostMapping("/json/vehicle")
-	public Vehicle saveJsonVehicle(@RequestBody Vehicle vehicle) {
-		
-		return vehicleService.saveJsonVehicle(vehicle);
-		
-	}
-	
-	@PostMapping("/vehicle")
+	@PostMapping("/view/vehicle")
 	public ModelAndView saveVehicle(@ModelAttribute Vehicle vehicle) {
 		
 		return vehicleService.saveVehicle(vehicle);
@@ -68,7 +70,7 @@ public class VehicleController {
 		return vehicleService.updateVehicle(vehicleUuid);
 	}
 	
-	@GetMapping("/vehicle/{vehicleUuid}")
+	@GetMapping("/view/vehicle/{vehicleUuid}")
 	public ModelAndView deleteVehicle(@PathVariable("vehicleUuid") UUID vehicleUuid) {
 		
 		return vehicleService.deleteVehicle(vehicleUuid);
@@ -113,7 +115,7 @@ public class VehicleController {
 	}
 	
 	@GetMapping("/manager/{mangerId}/vehicles")
-	public List<Vehicle> findAllVehiclesForManager(@PathVariable("mangerId") UUID mangerId) {
+	public List<VehicleDTO> findAllVehiclesForManager(@PathVariable("mangerId") UUID mangerId) {
 		
 		List<Enterprise> enterprises = enterpriseService.findAllEnterprisesByManagerId(mangerId);
 		
@@ -121,8 +123,35 @@ public class VehicleController {
 		
 		enterprises.forEach(enterprise -> vehicles.addAll(enterprise.getVehicles()));
 		
-		return vehicles;
+		return vehicles.stream().map(vehicle -> VehicleDTO.fromVehicle(vehicle)).collect(Collectors.toList());
+		
+		
 		
 	}
+	
+	@GetMapping("/vehicle_list")
+	public List<VehicleDTO> findAllVehiclesForManager() {
+		return vehicleService.findAllVehiclesForManager(getCurrentUser().getUsername());
+	}
+	
+	@PostMapping("/vehicle")
+	public VehicleDTO saveJsonVehicle(@RequestBody Vehicle vehicle) {
+		log.info("Vehicle was create....");
+		return vehicleService.saveJsonVehicle(vehicle, getCurrentUser().getUsername());
+		
+	}
+	
+	@PatchMapping("/vehicle")
+	public VehicleDTO updatesJsonVehicle(@RequestBody Vehicle vehicle) {
+		return vehicleService.saveJsonVehicle(vehicle, getCurrentUser().getUsername());
+		
+	}
+	
+	@DeleteMapping("/vehicle/{vehicleUuid}")
+	public boolean deleteVehicleById(@PathVariable("vehicleUuid") UUID vehicleUuid) {
+		return vehicleService.deleteVehicle(vehicleUuid, getCurrentUser().getUsername());
+	}
+	
+	
 	
 }

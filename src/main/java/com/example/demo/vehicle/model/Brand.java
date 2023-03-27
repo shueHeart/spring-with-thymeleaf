@@ -31,7 +31,6 @@ public class Brand {
 	
 	private int diskSize;
 	
-	@JsonIgnore
 	@OneToMany(mappedBy = "brand", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Vehicle> vehicles = new ArrayList<>();
 

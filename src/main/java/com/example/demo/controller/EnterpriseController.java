@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,9 +27,23 @@ public class EnterpriseController {
 		
 	}
 	
+	@GetMapping("/json/enterprises")
+	public List<Enterprise> findAllEnterprisesFull() {
+		
+		return enterpriseService.findAllEnterprisesFull();
+		
+	}
+	
 	@PostMapping("/enterprise")
 	public Enterprise saveOrUpdate(@RequestBody Enterprise enterprise) {
 		return enterpriseService.saveOrUpdate(enterprise);
+	}
+	
+	@GetMapping("/manager/{managerUuid}/enterprises")
+	public List<EnterpriseDTO> findAllEnterprisesForManager(@PathVariable("managerUuid") UUID managerUuid) {
+		
+		return enterpriseService.findAllEnterprisesForManager(managerUuid);
+		
 	}
 	
 }

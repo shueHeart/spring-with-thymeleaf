@@ -28,6 +28,10 @@ public class EnterpriseService {
 				.map(enterprise -> EnterpriseDTO.fromEnterprise(enterprise)).collect(Collectors.toList());
 	}
 	
+	public List<Enterprise> findAllEnterprisesFull() {
+		return enterpriseRepository.findAll();
+	}
+	
 	public Enterprise saveOrUpdate(Enterprise enterprise) {
 		return enterpriseRepository.save(enterprise);
 	}
@@ -42,6 +46,11 @@ public class EnterpriseService {
 //		managers.add(manager);
 		
 		return manager.getEnterprises();
+	}
+	
+	public List<EnterpriseDTO> findAllEnterprisesForManager(UUID managerId) {
+		return findAllEnterprisesByManagerId(managerId)
+				.stream().map(enterprise -> EnterpriseDTO.fromEnterprise(enterprise)).collect(Collectors.toList());
 	}
 	
 }

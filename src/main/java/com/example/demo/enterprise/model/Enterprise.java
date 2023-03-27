@@ -8,6 +8,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
@@ -32,6 +34,11 @@ public class Enterprise {
 	private OrganizationalForm organizationalForm;
 	
 	@ManyToMany
+//	@JoinTable(
+//			name = "enterprise_manager",
+//            joinColumns = @JoinColumn(name = "enterprise_id"),
+//            inverseJoinColumns = @JoinColumn(name = "manager_id")
+//		)
 	private List<Manager> managers = new ArrayList<Manager>();
 	
 //	@JsonIgnore
@@ -96,6 +103,14 @@ public class Enterprise {
 
 	public void setDrivers(List<Driver> drivers) {
 		this.drivers = drivers;
+	}
+
+	public List<Manager> getManagers() {
+		return managers;
+	}
+
+	public void setManagers(List<Manager> managers) {
+		this.managers = managers;
 	}
 
 	

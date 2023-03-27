@@ -39,6 +39,15 @@
 	        </div>
 	        
 	        <div>
+	            <label>Компания:</label>
+	       
+	            <select name="enterprise">
+  					<option th:each="enterprise : ${enterpriseList}" th:value="${enterprise.getUuid()}" th:text="${enterprise.getName()}"></option>
+				</select>
+	            
+	        </div>
+	        
+	        <div>
 	            <button type="submit">Save</button>
 	        </div>
 	    </form>

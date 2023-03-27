@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 
 import com.example.demo.enterprise.model.Enterprise;
 import com.example.demo.vehicle.model.Vehicle;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Driver {
@@ -28,7 +29,7 @@ public class Driver {
 	private int age;
 	
 	@ManyToOne
-    @JoinColumn(name = "enterprise_id")
+	@JoinColumn(name = "enterprise_id")
 	private Enterprise enterprise;
 	
 	@ManyToOne

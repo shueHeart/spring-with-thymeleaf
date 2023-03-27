@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <meta charset="UTF-8">
+	    <title>Создать марку</title>
+	</head>
+	<body>
+	    <h1>Создать водителя</h1>
+	    	
+	   	<form th:action="@{/manager}" method="post">
+	        <div>
+	            <label>Имя:</label>
+	            <input type="text" th:name="username"/>
+	        </div>
+	        <div>
+	            <label>Пароль:</label>
+	            <input type="text" th:name="password"/>
+	        </div>
+	        
+	        <select name="enterprises[]" multiple>
+  					<option th:each="enterprise : ${enterpriseList}" th:value="${enterprise.getUuid()}" th:text="${enterprise.getName()}"></option>
+				</select>
+	        <div>
+	            <button type="submit">Save</button>
+	        </div>
+	    </form>
+	    
+	</body>
+</html>

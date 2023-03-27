@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <meta charset="UTF-8">
+	    <title>Создать марку</title>
+	</head>
+	<body>
+	    <h1>Создать водителя</h1>
+	    	
+	   	<form th:action="@{/driver}" method="post">
+	        <div>
+	            <label>Имя:</label>
+	            <input type="text" th:name="firstName"/>
+	        </div>
+	        <div>
+	            <label>Фамилия:</label>
+	            <input type="text" th:name="lastName"/>
+	        </div>
+	        <div>
+	            <label>Оклад:</label>
+	            <input type="text" th:name="salary"/>
+	        </div>
+	        <div>
+	            <label>Возраст:</label>
+	            <input type="text" th:name="age"/>
+	        </div>
+	        
+	      	<div>
+	            <label>Компания:</label>
+	       
+	            <select name="enterprise">
+  					<option th:each="enterprise : ${enterpriseList}" th:value="${enterprise.getUuid()}" th:text="${enterprise.getName()}"></option>
+				</select>
+	            
+	        </div>
+	        
+	        
+	        <div>
+	            <button type="submit">Save</button>
+	        </div>
+	    </form>
+	    
+	</body>
+</html>

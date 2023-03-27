@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import com.example.demo.driver.model.Driver;
 import com.example.demo.enterprise.model.Enterprise;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "vehicle")

@@ -6,10 +6,9 @@
 </head>
 <body>
     <h1>Login</h1>
-    <form th:action="@{/login}" method="post">
+    <form th:action="@{/auth}" method="post">
         <div>
             <label>Username:</label>
-            <input type="text" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" hidden="hidden"/>
             <input type="text" th:name="username"/>
         </div>
         <div>
