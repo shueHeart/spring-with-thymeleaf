@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.demo.driver.model.DriverDTO;
 import com.example.demo.enterprise.model.Enterprise;
 import com.example.demo.enterprise.service.EnterpriseService;
 import com.example.demo.vehicle.model.Brand;
@@ -132,6 +133,11 @@ public class VehicleController extends BaseController{
 	@GetMapping("/vehicle_list")
 	public List<VehicleDTO> findAllVehiclesForManager() {
 		return vehicleService.findAllVehiclesForManager(getCurrentUser().getUsername());
+	}
+	
+	@GetMapping("/driver_list")
+	public List<DriverDTO> findAllDriversForManager() {
+		return vehicleService.findAllDriversForManager(getCurrentUser().getUsername());
 	}
 	
 	@PostMapping("/vehicle")
