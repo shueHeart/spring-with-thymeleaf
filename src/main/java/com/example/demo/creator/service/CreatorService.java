@@ -135,6 +135,8 @@ public class CreatorService {
 	}
 	
 
+
+
 	private final String[] colors = new String[] { "Белый", "Черный", "Красный", "Синий", "Зеленый", "Бежевый",
 			"Бежевый", "Сиреневый", "Графит" };
 
