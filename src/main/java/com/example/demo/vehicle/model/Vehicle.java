@@ -35,6 +35,8 @@ public class Vehicle {
 	
 	private UUID currentDriverUuid;
 	
+	private long sellDate;
+	
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
@@ -124,6 +126,14 @@ public class Vehicle {
 
 	public void setCurrentDriverUuid(UUID currentDriverUuid) {
 		this.currentDriverUuid = currentDriverUuid;
+	}
+
+	public long getSellDate() {
+		return sellDate;
+	}
+
+	public void setSellDate(long sellDate) {
+		this.sellDate = sellDate;
 	}
 	
 	

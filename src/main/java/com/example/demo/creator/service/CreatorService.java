@@ -1,5 +1,6 @@
 package com.example.demo.creator.service;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -15,7 +16,6 @@ import com.example.demo.enterprise.model.EnterpriseDTO;
 import com.example.demo.enterprise.service.EnterpriseService;
 import com.example.demo.manager.model.Manager;
 import com.example.demo.manager.repository.ManagerRepository;
-import com.example.demo.manager.service.ManagerService;
 import com.example.demo.vehicle.model.Brand;
 import com.example.demo.vehicle.model.Vehicle;
 import com.example.demo.vehicle.repository.BrandRepository;
@@ -81,7 +81,7 @@ public class CreatorService {
 		List<Vehicle> vehicles = new ArrayList<Vehicle>();
 		
 		List<Brand> brands = brandRepository.findAll();
-//		log.info(drivers.size() / creator.getVehicleNum() + "");
+		log.info(drivers.size() / creator.getVehicleNum() + "");
 		for (int vehicleNum = 0; vehicleNum < creator.getVehicleNum(); ++vehicleNum) {
 			
 			Vehicle vehicle = new Vehicle();
@@ -95,22 +95,42 @@ public class CreatorService {
 			
 			vehicle.setEnterprise(enterprise);
 			
+			long time = 1649112805000L;
+//			Long randomTime = randomNumber(2592000000)
+			
+			vehicle.setSellDate(randomLongNumber(2592000000L) + time);
+			
+			
 			
 			vehicle = vehicleRepository.save(vehicle);
 			
 			List<Driver> driversForVehicle = new ArrayList<Driver>();
 			vehicle.setDrivers(driversForVehicle);		
-			//warning
+		
 			for (int i = vehicleNum * (drivers.size() / creator.getVehicleNum()); i < vehicleNum * (drivers.size() / creator.getVehicleNum()) + (drivers.size() / creator.getVehicleNum()) && i < drivers.size(); ++i) {
-//				log.info(i + "");
+			
 				drivers.get(i).setVehicle(vehicle);
 				driverRepository.save(drivers.get(i));
 				driversForVehicle.add(drivers.get(i));
+				
 			}
 			
 			if (driversForVehicle.size() != 0 && vehicleNum % 5 == 0) {
 				vehicle.setCurrentDriverUuid(driversForVehicle.get(0).getUuid());
 			}
+			
+			vehicles.add(vehicle);
+			vehicle.setBodyColor(colors[randomNumber(colors.length - 1)]);
+			vehicle.setBrand(brands.get(randomNumber(brands.size() - 1)));
+			vehicle.setMileage(randomNumber(500000));
+			vehicle.setNumberOfOwners(randomNumber(15) + 1);
+			vehicle.setPrice(randomNumber(5000000) + 100000);
+			vehicle.setProductionYear(randomNumber(33) + 1990);
+			
+			vehicle.setEnterprise(enterprise);
+			
+			
+			vehicle = vehicleRepository.save(vehicle);
 			
 			vehicles.add(vehicle);
 			
@@ -134,8 +154,14 @@ public class CreatorService {
 		return new Random().nextInt(n + 1);
 	}
 	
+	public long randomLongNumber(long n) {
+		if (n < 0) {
+			throw new IllegalArgumentException("n must not be negative");
+		}
 
-
+		return new Random().nextLong(n + 1);
+	}
+	
 
 	private final String[] colors = new String[] { "Белый", "Черный", "Красный", "Синий", "Зеленый", "Бежевый",
 			"Бежевый", "Сиреневый", "Графит" };

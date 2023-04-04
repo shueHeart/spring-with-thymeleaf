@@ -17,7 +17,6 @@ import com.example.demo.vehicle.model.Vehicle;
 @Repository
 public interface VehicleRepository extends PagingAndSortingRepository<Vehicle, UUID>, JpaRepository<Vehicle, UUID> {
 	
-//	public List<Vehicle> findAll();
 	
 	public List<Vehicle> findAllByBrand(Brand brand);
 	

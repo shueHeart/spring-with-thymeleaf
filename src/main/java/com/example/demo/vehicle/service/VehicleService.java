@@ -1,7 +1,11 @@
 package com.example.demo.vehicle.service;
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -57,13 +61,18 @@ public class VehicleService {
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
 	
-	public ModelAndView getAllVehicles() {
+	public ModelAndView getAllVehicles(String managerName, int pageNumber, int pageSize, String timezone) {
 		
 		ModelAndView vehicles = new ModelAndView("vehicles");
-	    
-		List<Vehicle> vehicleList = vehicleRepository.findAll();
 		
-		vehicles.addObject("vehicleList", vehicleList);
+		Page<Vehicle> vehiclePage = findAllVehiclesForManager(managerName, pageNumber, pageSize);
+		
+		TimeZone timeZone = TimeZone.getTimeZone(timezone);
+		SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+		date.setTimeZone(timeZone);
+		
+		vehicles.addObject("date", date);
+		vehicles.addObject("vehiclePage", vehiclePage);
 		
 		return vehicles;
 		
@@ -232,9 +241,7 @@ public class VehicleService {
 		
 	}
 	
-	public Page<VehicleDTO> findAllVehiclesForManager(String managerUsername, int pageNumber, int pageSize) {
-		
-        
+	public Page<Vehicle> findAllVehiclesForManager(String managerUsername, int pageNumber, int pageSize) {
 		
 		Manager manager = (Manager) userDetailsManager.loadUserByUsername(managerUsername);
 		
@@ -242,20 +249,20 @@ public class VehicleService {
 		
 		Page<Vehicle> vehicles = vehicleRepository.findAllByEnterprise_Managers(manager, pageable);
 		
+		return vehicles;
+		
+	}
+	
+	
+	public Page<VehicleDTO> findAllVehiclesDTOForManager(String managerUsername, int pageNumber, int pageSize) {
+	
+		Page<Vehicle> vehicles = findAllVehiclesForManager(managerUsername, pageNumber, pageSize);
+		
 		List<VehicleDTO> vehicleDtosList = vehicles.getContent().stream().map(vehicle -> VehicleDTO.fromVehicle(vehicle)).collect(Collectors.toList());
 		
 		Page<VehicleDTO> vehicleDtos = new PageImpl<VehicleDTO>(vehicleDtosList, vehicles.getPageable(), vehicles.getTotalElements());
 		
-//		
-//		List<Enterprise> enterprises = enterpriseService.findAllEnterprisesByManagerId(manager.getUuid());
-//		
-//		
-//		
-//		for (Enterprise enterprise : enterprises) {
-//			vehicles.addAll(enterprise.getVehicles());
-//		}
-		
-		return vehicleDtos;//vehicles.stream().map(vehicle -> VehicleDTO.fromVehicle(vehicle)).collect(Collectors.toList());
+		return vehicleDtos;
 		
 	}
 	

@@ -9,7 +9,10 @@ import com.example.demo.creator.model.Creator;
 import com.example.demo.creator.service.CreatorService;
 import com.example.demo.enterprise.model.EnterpriseDTO;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
+@Slf4j
 public class CreatorController extends BaseController{
 
 	@Autowired
@@ -18,6 +21,7 @@ public class CreatorController extends BaseController{
 	
 	@PostMapping("/creator/create")
 	public EnterpriseDTO creator(@RequestBody Creator creator) {
+		log.info("HERE");
 		return creatorService.create(creator, getCurrentUser());
 	}
 	

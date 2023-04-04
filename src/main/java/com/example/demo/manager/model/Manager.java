@@ -49,6 +49,8 @@ public class Manager implements UserDetails {
 	
 	private boolean accountNonLocked = true;
 	
+	private String timezone;
+	
 	@ManyToMany(fetch = FetchType.EAGER) 
 	private List<Authority> authorities = new ArrayList<Authority>();
 	
@@ -139,6 +141,14 @@ public class Manager implements UserDetails {
 
 	public void setAuthorities(List<Authority> authorities) {
 		this.authorities = authorities;
+	}
+
+	public String getTimezone() {
+		return timezone;
+	}
+
+	public void setTimezone(String timezone) {
+		this.timezone = timezone;
 	}
 	
 	
