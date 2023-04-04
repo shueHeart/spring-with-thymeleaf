@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @EnableWebSecurity
 @Slf4j
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
+	
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
 	@Autowired
@@ -49,7 +49,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //		http.csrf().disable().authorizeRequests().antMatchers("/auth", "/login", "/create/manager", "/manager")
 //				.permitAll().anyRequest().authenticated();
 
-		http.authorizeRequests().anyRequest().authenticated().and().httpBasic().and().csrf().disable();
+		http.authorizeRequests().anyRequest().hasAuthority("ADMIN")
+			.and()
+				.formLogin()
+				.loginPage("/login")
+				.defaultSuccessUrl("/enterprises")
+				.permitAll()
+			.and().httpBasic()
+			.and().csrf().disable();
 
 	}
 
