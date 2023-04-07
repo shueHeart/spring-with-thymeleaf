@@ -39,7 +39,10 @@ public class VehicleDTO {
     		this.brandUuid = vehicle.getBrand().getUuid();
     	}
     	
+    	TimeZone timezone = TimeZone.getTimeZone(vehicle.getEnterprise().getTimezone());
 		SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+		date.setTimeZone(timezone);
+		
 		this.sellDate = date.format(vehicle.getSellDate());
     	
     }

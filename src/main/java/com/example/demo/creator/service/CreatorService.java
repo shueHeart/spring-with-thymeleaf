@@ -46,6 +46,7 @@ public class CreatorService {
 		
 		Enterprise enterprise = creator.getEnterprise();
 
+		enterprise.setTimezone(timezones[randomNumber(names.length - 1)]);
 		
 		List<Manager> managers = new ArrayList<Manager>();
 		managers.add(manager);
@@ -171,5 +172,8 @@ public class CreatorService {
 
 	private final String[] secondNames = new String[] { "Иванов", "Каммеррер", "Гаал", "Хунта", "Полуэктович",
 			"Сидоров", "Петров", "Федоров", "Корнеев" };
+
+	private final String[] timezones = new String[] { "Asia/Singapore", "Europe/Monaco", "America/Adak", "America/Atka", "Canada/Mountain",
+			"America/Chicago", "America/Bogota", "America/Detroit", "Chile/Continental" };
 
 }

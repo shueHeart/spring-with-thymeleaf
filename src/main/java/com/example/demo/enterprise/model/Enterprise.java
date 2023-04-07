@@ -33,6 +33,8 @@ public class Enterprise {
 	
 	private OrganizationalForm organizationalForm;
 	
+	private String timezone;
+	
 	@ManyToMany
 //	@JoinTable(
 //			name = "enterprise_manager",
@@ -111,6 +113,14 @@ public class Enterprise {
 
 	public void setManagers(List<Manager> managers) {
 		this.managers = managers;
+	}
+
+	public String getTimezone() {
+		return timezone;
+	}
+
+	public void setTimezone(String timezone) {
+		this.timezone = timezone;
 	}
 
 	
