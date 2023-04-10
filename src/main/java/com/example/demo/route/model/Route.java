@@ -8,6 +8,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -20,11 +22,16 @@ public class Route {
 	@GeneratedValue
 	private UUID uuid;
 	
-	@OneToMany(mappedBy = "route", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "route")
 	private List<RoutePoint> routePoints = new ArrayList<RoutePoint>();
 	
-	@OneToOne
+	@ManyToOne
+	@JoinColumn(name="vehicle_id")
 	private Vehicle vehicle;
+	
+	public Route () {
+		
+	}
 
 	public UUID getUuid() {
 		return uuid;

@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import org.springframework.data.geo.Point;
 
 @Entity
-public class RoutePoint extends Point{
+public class RoutePoint {
 	
 	@Id
 	@GeneratedValue
@@ -21,12 +21,19 @@ public class RoutePoint extends Point{
 	
 	private double y;
 	
+	private long visitDate;
+	
 	@ManyToOne
     @JoinColumn(name = "route_id")
 	private Route route;
 	
+	public RoutePoint () {
+		
+	}
+	
 	public RoutePoint(double x, double y) {
-		super(x, y);
+		this.x = x;
+		this.y = y;
 	}
 
 	public UUID getUuid() {
@@ -52,5 +59,23 @@ public class RoutePoint extends Point{
 	public void setX(double x) {
 		this.x = x;
 	}
+
+	public long getVisitDate() {
+		return visitDate;
+	}
+
+	public void setVisitDate(long visitDate) {
+		this.visitDate = visitDate;
+	}
+
+	public Route getRoute() {
+		return route;
+	}
+
+	public void setRoute(Route route) {
+		this.route = route;
+	}
+	
+	
 	
 }

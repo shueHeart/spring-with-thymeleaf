@@ -1,8 +1,10 @@
 package com.example.demo.vehicle.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,6 +15,7 @@ import javax.persistence.Table;
 
 import com.example.demo.driver.model.Driver;
 import com.example.demo.enterprise.model.Enterprise;
+import com.example.demo.route.model.Route;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -47,6 +50,9 @@ public class Vehicle {
 
     @OneToMany(mappedBy="vehicle")
     private List<Driver> drivers;
+    
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Route> routes = new ArrayList<Route>();
 	
 	public int getProductionYear() {
 		return productionYear;

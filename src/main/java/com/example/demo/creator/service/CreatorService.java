@@ -16,6 +16,10 @@ import com.example.demo.enterprise.model.EnterpriseDTO;
 import com.example.demo.enterprise.service.EnterpriseService;
 import com.example.demo.manager.model.Manager;
 import com.example.demo.manager.repository.ManagerRepository;
+import com.example.demo.route.model.Route;
+import com.example.demo.route.model.RoutePoint;
+import com.example.demo.route.repository.RoutePointRepository;
+import com.example.demo.route.repository.RouteRepository;
 import com.example.demo.vehicle.model.Brand;
 import com.example.demo.vehicle.model.Vehicle;
 import com.example.demo.vehicle.repository.BrandRepository;
@@ -41,6 +45,12 @@ public class CreatorService {
 	
 	@Autowired
 	private ManagerRepository managerRepository;
+	
+	@Autowired 
+	private RouteRepository routeRepository;
+	
+	@Autowired 
+	private RoutePointRepository routePointRepository;
 	
 	public EnterpriseDTO create(Creator creator, Manager manager) {
 		
@@ -135,6 +145,26 @@ public class CreatorService {
 			
 			vehicles.add(vehicle);
 			
+			Route route = new Route();
+			route.setVehicle(vehicle);
+			route = routeRepository.save(route);
+			
+			List<RoutePoint> routePoints = new ArrayList<RoutePoint>();
+			long startDate = randomLongNumber(2592000000L) + time;
+			for (int i = 0; i < 100; ++i) {
+				
+				RoutePoint routePoint = new RoutePoint(i, i);
+				
+				routePoint.setVisitDate(startDate + 1000 * i);
+				routePoint.setRoute(route);
+				routePoint = routePointRepository.save(routePoint);
+				
+				routePoints.add(routePoint);
+			}
+				
+			route.setRoutePoints(routePoints);
+			
+			routeRepository.save(route);
 			
 		}
 		vehicles = vehicleRepository.saveAll(vehicles);
