@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.example.demo.vehicle.model.Vehicle;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Route {
@@ -22,11 +23,17 @@ public class Route {
 	@GeneratedValue
 	private UUID uuid;
 	
+	private long startDate;
+	
+	private long endDate;
+	
 	@OneToMany(mappedBy = "route")
+	@JsonIgnore
 	private List<RoutePoint> routePoints = new ArrayList<RoutePoint>();
 	
 	@ManyToOne
 	@JoinColumn(name="vehicle_id")
+	@JsonIgnore
 	private Vehicle vehicle;
 	
 	public Route () {
@@ -39,6 +46,22 @@ public class Route {
 
 	public void setUuid(UUID uuid) {
 		this.uuid = uuid;
+	}
+
+	public long getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(long startDate) {
+		this.startDate = startDate;
+	}
+
+	public long getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(long endDate) {
+		this.endDate = endDate;
 	}
 
 	public List<RoutePoint> getRoutePoints() {

@@ -150,6 +150,8 @@ public class CreatorService {
 			route = routeRepository.save(route);
 			
 			List<RoutePoint> routePoints = new ArrayList<RoutePoint>();
+			
+			
 			long startDate = randomLongNumber(2592000000L) + time;
 			for (int i = 0; i < 100; ++i) {
 				
@@ -161,8 +163,10 @@ public class CreatorService {
 				
 				routePoints.add(routePoint);
 			}
-				
+			
 			route.setRoutePoints(routePoints);
+			route.setStartDate(route.getRoutePoints().get(0).getVisitDate());
+			route.setEndDate(route.getRoutePoints().get(route.getRoutePoints().size() - 1).getVisitDate());
 			
 			routeRepository.save(route);
 			

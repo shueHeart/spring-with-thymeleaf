@@ -1,14 +1,19 @@
 package com.example.demo.route.model;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.TimeZone;
 import java.util.UUID;
 
-import com.example.demo.vehicle.model.Vehicle;
-import com.example.demo.vehicle.model.VehicleDTO;
+import fr.dudie.nominatim.client.JsonNominatimClient;
+import fr.dudie.nominatim.model.Address;
+import fr.dudie.nominatim.model.BoundingBox;
 
-public class RoutePointDTO{
-	
+import org.apache.http.impl.client.HttpClients;
+
+
+public class RoutePointWithAddressDTO extends RoutePointDTO {
 	
 	private UUID uuid;
 	
@@ -18,12 +23,14 @@ public class RoutePointDTO{
 	
 	private String visitDate;
 	
+	private String address;
+	
 	private UUID routeId;
 	
-	protected RoutePointDTO() {}
-	
-	protected RoutePointDTO(RoutePoint routePoint) {
+	private RoutePointWithAddressDTO(RoutePoint routePoint) throws IOException {
 	    	
+//    	super(routePoint);
+	 	
     	this.uuid = routePoint.getUuid();
     	this.x = routePoint.getX();
     	this.y = routePoint.getY();
@@ -35,11 +42,27 @@ public class RoutePointDTO{
 		this.visitDate = date.format(routePoint.getVisitDate());
 		
 		this.setRouteId(routePoint.getUuid());
+		
+    	JsonNominatimClient nominatimClient = new JsonNominatimClient(HttpClients.createDefault(), "http://nominatim.openstreetmap.org/");
+
+    	Address address = nominatimClient.getAddress(routePoint.getX(), routePoint.getY());
+
+    	this.address = address.getDisplayName();
     	
     }
     
-    public static RoutePointDTO fromRoutePoint(RoutePoint routePoint) {
-    	return new RoutePointDTO(routePoint);
+    public RoutePointWithAddressDTO() {
+	}
+
+	public static RoutePointWithAddressDTO fromRoutePoint(RoutePoint routePoint) {
+    	try {
+			return new RoutePointWithAddressDTO(routePoint);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	return new RoutePointWithAddressDTO();
     }
 
 	public UUID getUuid() {
@@ -81,4 +104,13 @@ public class RoutePointDTO{
 	public void setRouteId(UUID routeId) {
 		this.routeId = routeId;
 	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	
 }

@@ -16,9 +16,14 @@ import com.example.demo.controller.LoginController;
 import com.example.demo.geojson.model.GEO;
 import com.example.demo.geojson.model.Geometry;
 import com.example.demo.geojson.model.Properties;
+import com.example.demo.route.model.Route;
+import com.example.demo.route.model.RouteDTO;
+import com.example.demo.route.model.RouteForVehicleDTO;
 import com.example.demo.route.model.RoutePoint;
 import com.example.demo.route.model.RoutePointDTO;
+import com.example.demo.route.model.RoutePointWithAddressDTO;
 import com.example.demo.route.repository.RoutePointRepository;
+import com.example.demo.route.repository.RouteRepository;
 import com.example.demo.vehicle.model.Vehicle;
 import com.example.demo.vehicle.repository.VehicleRepository;
 
@@ -34,16 +39,42 @@ public class RouteService {
 	private RoutePointRepository routePointRepository;
 	
 	@Autowired
+	private RouteRepository routeRepository;
+	
+	@Autowired
 	private VehicleRepository vehicleRepository;
 	
-	public ResponseEntity<?> findAllByVehicleAndDateInterval(UUID vehicleId, long startDate, long endDate, boolean geo) {
+	public List<RouteDTO> findAllRoutesByStartDateAndEndDate(long startDate, long endDate) {
+		return routeRepository.findRoutesByStartDateAndEndDate(startDate, endDate)
+				.stream().map(route -> RouteDTO.fromRoute(route)).collect(Collectors.toList());
+	}
+	
+	public List<RouteForVehicleDTO> findAllRoutesForVehicle(UUID vehicleUuid) {
+		return routeRepository.findAllByVehicleUuid(vehicleUuid)
+				.stream().map(route -> RouteForVehicleDTO.fromRoute(route)).collect(Collectors.toList());
+	}
+	
+	public List<RouteForVehicleDTO> findAllRoutesByVehicleIdAndStartDateAndEndDate(UUID vehicleId, long startDate, long endDate) {
+		
+		return routeRepository.findRoutesByVehicleUuidAndStartDateAndEndDate(vehicleId, startDate, endDate)
+				.stream().map(route -> RouteForVehicleDTO.fromRoute(route)).collect(Collectors.toList());
+		
+//		List<Route> routes = routeRepository.findRoutesByStartDateAndEndDate(startDate, endDate);
+//		
+//		routes.stream().filter(route -> route.getVehicle().getUuid().equals(vehicleId)).collect(Collectors.toList());
+//		
+//		return routes.stream().map(route -> RouteForVehicleDTO.fromRoute(route)).collect(Collectors.toList());
+		
+	}
+	
+	public ResponseEntity<?> findAllRoutePointsByVehicleAndDateInterval(UUID vehicleId, long startDate, long endDate, boolean geo) {
 		
 		Vehicle vehicle = vehicleRepository.findById(vehicleId)
 				.orElseThrow(() -> new RuntimeException("Vehicle not found"));
 		
 		List<RoutePoint> routePoints = routePointRepository.findByRouteVehicleAndVisitDateBetween(vehicle, startDate, endDate);
 		
-		List<RoutePointDTO> routePointDTOs = routePoints.stream().map(routePoint -> RoutePointDTO.fromVehicle(routePoint)).collect(Collectors.toList());
+		List<RoutePointDTO> routePointDTOs = routePoints.stream().map(routePoint -> RoutePointDTO.fromRoutePoint(routePoint)).collect(Collectors.toList());
 		
 		if (geo) {
 			return new ResponseEntity<>(geoBuilder(routePointDTOs, vehicleId), HttpStatus.OK);
@@ -51,9 +82,8 @@ public class RouteService {
 		
 		log.info(routePoints.size() + "");
 		
-		return new ResponseEntity<>(routePoints.stream().map(routePoint -> RoutePointDTO.fromVehicle(routePoint)).collect(Collectors.toList()), HttpStatus.OK); 
+		return new ResponseEntity<>(routePoints.stream().map(routePoint -> RoutePointDTO.fromRoutePoint(routePoint)).collect(Collectors.toList()), HttpStatus.OK); 
 	}
-	
 	
 	private List<GEO> geoBuilder(List<RoutePointDTO> routePointsDTOs, UUID vehicleId) { 
 		
@@ -71,4 +101,5 @@ public class RouteService {
 		return geos;
 		
 	}
+	
 }
